@@ -159,7 +159,7 @@ sub search {
 		'isbn'			=> $data->{isbn13},
 		'author'		=> $data->{author},
 		'title'			=> $data->{title},
-		'book_link'		=> $url,
+		'book_link'		=> "$url",
 		'image_link'	=> $data->{image},
 		'thumb_link'	=> $data->{thumb},
 		'description'	=> $data->{description},
@@ -167,6 +167,7 @@ sub search {
 		'publisher'		=> $data->{publisher},
 		'binding'	    => $data->{binding},
 		'pages'		    => $data->{pages},
+        'html'          => $html
 	};
 
 #use Data::Dumper;
