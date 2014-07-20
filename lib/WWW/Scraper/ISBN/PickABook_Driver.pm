@@ -37,8 +37,8 @@ use WWW::Mechanize;
 ###########################################################################
 # Constants
 
-use constant	REFERER	=> 'http://www.pickabook.co.uk/';
-use constant	SEARCH	=> 'http://www.pickabook.co.uk/%s.aspx?ToSearch=TRUE';
+use constant    REFERER => 'http://www.pickabook.co.uk/';
+use constant    SEARCH  => 'http://www.pickabook.co.uk/%s.aspx?ToSearch=TRUE';
 my ($URL1,$URL2) = ('http://www.PickABook.co.uk/book/','/[^?]+\?b=\-3\&amp;t=\-26\#Bibliographicdata\-26');
 
 #--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ my ($URL1,$URL2) = ('http://www.PickABook.co.uk/book/','/[^?]+\?b=\-3\&amp;t=\-2
 
 =item C<search()>
 
-Creates a query string, then passes the appropriate form fields to the 
+Creates a query string, then passes the appropriate form fields to the
 Book Depository server.
 
 The returned page should be the correct catalog page for that ISBN. If not the
@@ -60,7 +60,7 @@ function returns zero and allows the next driver in the chain to have a go. If
 a valid page is returned, the following fields are returned via the book hash:
 
   isbn          (now returns isbn13)
-  isbn10        
+  isbn10
   isbn13
   ean13         (industry name)
   author
@@ -80,18 +80,18 @@ website.
 =cut
 
 sub search {
-	my $self = shift;
-	my $isbn = shift;
-	$self->found(0);
-	$self->book(undef);
+    my $self = shift;
+    my $isbn = shift;
+    $self->found(0);
+    $self->book(undef);
 
     # validate and convert into EAN13 format
     my $ean = $self->convert_to_ean13($isbn);
-    return $self->handler("Invalid ISBN specified")   
+    return $self->handler("Invalid ISBN specified")
         if(!$ean || (length $isbn == 13 && $isbn ne $ean)
                  || (length $isbn == 10 && $isbn ne $self->convert_to_isbn10($ean)));
 
-	my $mech = WWW::Mechanize->new();
+    my $mech = WWW::Mechanize->new();
     $mech->agent_alias( 'Windows IE 6' );
     $mech->add_header( 'Accept-Encoding' => undef );
     $mech->add_header( 'Referer' => REFERER );
@@ -101,19 +101,19 @@ sub search {
 
     eval { $mech->get( $search ) };
     return $self->handler("The Pick-A-Book website appears to be unavailable.")
-	    if($@ || !$mech->success() || !$mech->content());
+        if($@ || !$mech->success() || !$mech->content());
 
-	# The Book page
+    # The Book page
     my $html = $mech->content();
 
-	return $self->handler("Failed to find that book on the Pick-A-Book website. [$isbn]")
-		if(!$html || $html =~ m!Your search for "[^"]+" has produced 0 results.!si);
-    
+    return $self->handler("Failed to find that book on the Pick-A-Book website. [$isbn]")
+        if(!$html || $html =~ m!Your search for "[^"]+" has produced 0 results.!si);
+
     $html =~ s/&amp;/&/g;
 #print STDERR "\n# content2=[\n$html\n]\n";
 
     my $data;
-    ($data->{author},$data->{title})    
+    ($data->{author},$data->{title})
                             = $html =~ m!<span id="lblbooktitlevalue" title="([^"]+)"[^>]*>([^<]+)</span>!si;
     ($data->{binding})      = $html =~ m!<span id="lblbindingvalue"[^>]*>([^<]+)</span>!si;
     ($data->{isbn13})       = $html =~ m!<span id="lblisbn13"[^>]*>([^<]+)</span>!si;
@@ -139,11 +139,11 @@ sub search {
 #use Data::Dumper;
 #print STDERR "\n# " . Dumper($data);
 
-	return $self->handler("Could not extract data from the Pick-A-Book result page.")
-		unless(defined $data);
+    return $self->handler("Could not extract data from the Pick-A-Book result page.")
+        unless(defined $data);
 
-	# trim top and tail
-	foreach (keys %$data) { 
+    # trim top and tail
+    foreach (keys %$data) {
         next unless(defined $data->{$_});
         $data->{$_} =~ s!&nbsp;! !g;
         $data->{$_} =~ s/^\s+//;
@@ -152,30 +152,30 @@ sub search {
 
     my $url = $mech->uri();
 
-	my $bk = {
-		'ean13'		    => $data->{isbn13},
-		'isbn13'		=> $data->{isbn13},
-		'isbn10'		=> $data->{isbn10},
-		'isbn'			=> $data->{isbn13},
-		'author'		=> $data->{author},
-		'title'			=> $data->{title},
-		'book_link'		=> "$url",
-		'image_link'	=> $data->{image},
-		'thumb_link'	=> $data->{thumb},
-		'description'	=> $data->{description},
-		'pubdate'		=> $data->{pubdate},
-		'publisher'		=> $data->{publisher},
-		'binding'	    => $data->{binding},
-		'pages'		    => $data->{pages},
+    my $bk = {
+        'ean13'         => $data->{isbn13},
+        'isbn13'        => $data->{isbn13},
+        'isbn10'        => $data->{isbn10},
+        'isbn'          => $data->{isbn13},
+        'author'        => $data->{author},
+        'title'         => $data->{title},
+        'book_link'     => "$url",
+        'image_link'    => $data->{image},
+        'thumb_link'    => $data->{thumb},
+        'description'   => $data->{description},
+        'pubdate'       => $data->{pubdate},
+        'publisher'     => $data->{publisher},
+        'binding'       => $data->{binding},
+        'pages'         => $data->{pages},
         'html'          => $html
-	};
+    };
 
 #use Data::Dumper;
 #print STDERR "\n# book=".Dumper($bk);
 
     $self->book($bk);
-	$self->found(1);
-	return $self->book;
+    $self->found(1);
+    return $self->book;
 }
 
 1;
