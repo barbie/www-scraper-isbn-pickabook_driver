@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use vars qw($VERSION @ISA);
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 #--------------------------------------------------------------------------
 
@@ -76,6 +76,8 @@ a valid page is returned, the following fields are returned via the book hash:
 
 The book_link, image_link and thumb_link all refer back to the Pick-A-Book
 website.
+
+=back
 
 =cut
 
