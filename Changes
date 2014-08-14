@@ -3,6 +3,7 @@ Revision history for WWW-Scraper-ISBN-PickABook_Driver
 
         - description pattern updated.
         - no results pattern updated.
+        - updated test data.
 
 0.04    2014-07-30
         - added isbn-check.pl to examples.
