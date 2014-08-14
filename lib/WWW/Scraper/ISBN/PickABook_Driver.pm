@@ -123,7 +123,7 @@ sub search {
     ($data->{publisher})    = $html =~ m!<span id="lblpublishervalue"[^>]*>([^<]+)</span>!si;
     ($data->{pubdate})      = $html =~ m!<span id="lblpublishdatevalue"[^>]*>([^<]+)</span>!si;
     ($data->{pages})        = $html =~ m!<span id="lblpagesvalue"[^>]*>([^<]+)</span>!si;
-    ($data->{description})  = $html =~ m!<span id="lbldescriptionvalue"[^>]*>([^<]+)</span>!si;
+    ($data->{description})  = $html =~ m!<span id="lbldescriptionvalueL?"[^>]*>([^<]+)</span>!si;
     ($data->{isbn10})       = $html =~ m!<span id="lblISBNvalue"[^>]*>([^<]+)</span>!si;
     ($data->{image})        = $html =~ m!<input type="image" name="imgbook" id="imgbook" title="[^"]+" src="([^"]+)"[^>]*>!si;
 
