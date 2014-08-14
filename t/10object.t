@@ -90,8 +90,7 @@ SKIP: {
     }
 
     # this ISBN isn't available
-	my $isbn = "9780571239566";
-    my $record;
+	$isbn = "9780571239566";
     eval { $record = $scraper->search($isbn); };
     if($@) {
         like($@,qr/Invalid ISBN specified/);
