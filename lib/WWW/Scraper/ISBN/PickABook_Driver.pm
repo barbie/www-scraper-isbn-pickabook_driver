@@ -109,7 +109,7 @@ sub search {
     my $html = $mech->content();
 
     return $self->handler("Failed to find that book on the Pick-A-Book website. [$isbn]")
-        if(!$html || $html =~ m!Your search for "[^"]+" has produced 0 results.!si);
+        if(!$html || $html =~ m!Your search for "<span id="lblresultline"><b>ISBN = \d+</b></span>"\s+has produced 0 results.!si);
 
     $html =~ s/&amp;/&/g;
 #print STDERR "\n# content2=[\n$html\n]\n";
