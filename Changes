@@ -1,6 +1,7 @@
 Revision history for WWW-Scraper-ISBN-PickABook_Driver
 ======================================================
 
+0.05    2014-08-20
         - description pattern updated.
         - no results pattern updated.
         - updated test data.
