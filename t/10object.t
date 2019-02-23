@@ -12,34 +12,34 @@ my $CHECK_DOMAIN    = 'www.google.com';
 
 my %tests = (
     '0552557803' => [
-        [ 'is',     'isbn',         '9780552557801'     ],
-        [ 'is',     'isbn10',       '0552557803'        ],
-        [ 'is',     'isbn13',       '9780552557801'     ],
-        [ 'is',     'ean13',        '9780552557801'     ],
-        [ 'is',     'title',        'Nation'            ],
-        [ 'is',     'author',       'Terry Pratchett'   ],
-        [ 'is',     'publisher',    q|Random House Children's Publishers Uk|    ],
-        [ 'is',     'pubdate',      '24 September, 2009'   ],
-        [ 'is',     'binding',      'Paperback'         ],
-        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/2018_4_24_157\\9780552557801.jpg'   ],
-        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/2018_4_24_157\\9780552557801.jpg'   ],
-        [ 'like',   'description',  qr|When a giant wave destroys his entire Nation|            ],
+        [ 'is',     'isbn',         '9780552557801'      ],
+        [ 'is',     'isbn10',       '0552557803'         ],
+        [ 'is',     'isbn13',       '9780552557801'      ],
+        [ 'is',     'ean13',        '9780552557801'      ],
+        [ 'is',     'title',        'Nation'             ],
+        [ 'is',     'author',       'Terry Pratchett'    ],
+        [ 'is',     'publisher',    q|Random House Children's Publishers Uk| ],
+        [ 'is',     'pubdate',      '24 September, 2009' ],
+        [ 'is',     'binding',      'Paperback'          ],
+        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/2018_4_24_157\\9780552557801.jpg' ],
+        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/2018_4_24_157\\9780552557801.jpg' ],
+        [ 'like',   'description',  qr|When a giant wave destroys his entire Nation|              ],
         [ 'is',     'book_link',    'http://www.pickabook.co.uk/9780552557801.aspx?ToSearch=TRUE' ]
     ],
     '9780571224814' => [
-        [ 'is',     'isbn',         '9780571224814'     ],
-        [ 'is',     'isbn10',       '0571224814'        ],
-        [ 'is',     'isbn13',       '9780571224814'     ],
-        [ 'is',     'ean13',        '9780571224814'     ],
-        [ 'is',     'title',        'Touching From A Distance'  ],
-        [ 'is',     'author',       'Deborah Curtis'    ],
-        [ 'like',   'publisher',    qr|Faber \S+ Faber|   ],
-        [ 'is',     'pubdate',      '17 February, 2005' ],
-        [ 'is',     'binding',      'Paperback'         ],
-        [ 'is',     'pages',        240                 ],
-        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/2017_7_13\9780571224814.jpg'  ],
-        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/2017_7_13\9780571224814.jpg'  ],
-        [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius| ],
+        [ 'is',     'isbn',         '9780571224814'      ],
+        [ 'is',     'isbn10',       '0571224814'         ],
+        [ 'is',     'isbn13',       '9780571224814'      ],
+        [ 'is',     'ean13',        '9780571224814'      ],
+        [ 'is',     'title',        'Touching From A Distance' ],
+        [ 'is',     'author',       'Deborah Curtis'     ],
+        [ 'like',   'publisher',    qr|Faber \S+ Faber|  ],
+        [ 'is',     'pubdate',      '17 February, 2005'  ],
+        [ 'is',     'binding',      'Paperback'          ],
+        [ 'is',     'pages',        240                  ],
+        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/2017_7_13\9780571224814.jpg' ],
+        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/2017_7_13\9780571224814.jpg' ],
+        [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius|   ],
         [ 'is',     'book_link',    'http://www.pickabook.co.uk/9780571224814.aspx?ToSearch=TRUE' ]
     ],
 );
@@ -53,12 +53,12 @@ my $scraper = WWW::Scraper::ISBN->new();
 isa_ok($scraper,'WWW::Scraper::ISBN');
 
 SKIP: {
-	skip "Can't see a network connection", $tests+2   if(pingtest($CHECK_DOMAIN));
+    skip "Can't see a network connection", $tests+2   if(pingtest($CHECK_DOMAIN));
 
-	$scraper->drivers($DRIVER);
+    $scraper->drivers($DRIVER);
 
     # this ISBN doesn't exist
-	my $isbn = "098765432X";
+    my $isbn = "098765432X";
     my $record;
     eval { $record = $scraper->search($isbn); };
     if($@) {
@@ -70,11 +70,11 @@ SKIP: {
         my $book = $record->book;
         diag("book=[".Dumper($book)."]");
     } else {
-		like($record->error,qr/Invalid ISBN specified|Failed to find that book|website appears to be unavailable/);
+        like($record->error,qr/Invalid ISBN specified|Failed to find that book|website appears to be unavailable/);
     }
 
     # this ISBN isn't available
-	$isbn = "9780571239566";
+    $isbn = "9780571239566";
     eval { $record = $scraper->search($isbn); };
     if($@) {
         like($@,qr/Invalid ISBN specified/);
@@ -85,7 +85,7 @@ SKIP: {
         my $book = $record->book;
         diag("book=[".Dumper($book)."]");
     } else {
-		like($record->error,qr/Invalid ISBN specified|Failed to find that book|website appears to be unavailable/);
+        like($record->error,qr/Invalid ISBN specified|Failed to find that book|website appears to be unavailable/);
     }
 
     for my $isbn (keys %tests) {
