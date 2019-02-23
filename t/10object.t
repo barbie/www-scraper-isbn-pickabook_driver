@@ -2,7 +2,7 @@
 use strict;
 
 use Data::Dumper;
-use Test::More tests => 50;
+use Test::More tests => 34;
 use WWW::Scraper::ISBN;
 
 ###########################################################
@@ -11,22 +11,6 @@ my $DRIVER          = 'PickABook';
 my $CHECK_DOMAIN    = 'www.google.com';
 
 my %tests = (
-    '1558607013' => [
-        [ 'is',     'isbn',         '9781558607019'     ],
-        [ 'is',     'isbn10',       '1558607013'        ],
-        [ 'is',     'isbn13',       '9781558607019'     ],
-        [ 'is',     'ean13',        '9781558607019'     ],
-        [ 'is',     'title',        'Higher-Order Perl' ],
-        [ 'is',     'author',       'Mark Jason Dominus'            ],
-        [ 'is',     'publisher',    'Elsevier Science & Technology' ],
-        [ 'is',     'pubdate',      '10 December, 2004' ],
-        [ 'is',     'binding',      'Paperback'         ],
-        [ 'is',     'pages',        '602'               ],
-        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/2008_2_22_41\9781558607019.jpg' ],
-        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/2008_2_22_41\9781558607019.jpg' ],
-        [ 'like',   'description',  qr|Most Perl programmers were originally trained as C and Unix programmers,| ],
-        [ 'is',     'book_link',    'http://www.pickabook.co.uk/9781558607019.aspx?ToSearch=TRUE' ]
-    ],
     '0552557803' => [
         [ 'is',     'isbn',         '9780552557801'     ],
         [ 'is',     'isbn10',       '0552557803'        ],
@@ -34,12 +18,12 @@ my %tests = (
         [ 'is',     'ean13',        '9780552557801'     ],
         [ 'is',     'title',        'Nation'            ],
         [ 'is',     'author',       'Terry Pratchett'   ],
-        [ 'is',     'publisher',    'Random House Children\'s Books'    ],
-        [ 'is',     'pubdate',      '1 October, 2020'   ],
+        [ 'is',     'publisher',    q|Random House Children's Publishers Uk|    ],
+        [ 'is',     'pubdate',      '24 September, 2009'   ],
         [ 'is',     'binding',      'Paperback'         ],
-        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/nojacket.gif'   ],
-        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/nojacket.gif'   ],
-        [ 'like',   'description',  qr|Finding himself alone on a desert island|            ],
+        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/2018_4_24_157\\9780552557801.jpg'   ],
+        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/2018_4_24_157\\9780552557801.jpg'   ],
+        [ 'like',   'description',  qr|When a giant wave destroys his entire Nation|            ],
         [ 'is',     'book_link',    'http://www.pickabook.co.uk/9780552557801.aspx?ToSearch=TRUE' ]
     ],
     '9780571224814' => [
@@ -48,13 +32,13 @@ my %tests = (
         [ 'is',     'isbn13',       '9780571224814'     ],
         [ 'is',     'ean13',        '9780571224814'     ],
         [ 'is',     'title',        'Touching From A Distance'  ],
-        [ 'is',     'author',       'Ian Curtis, Deborah Curtis'    ],
-        [ 'is',     'publisher',    'Faber And Faber'   ],
+        [ 'is',     'author',       'Deborah Curtis'    ],
+        [ 'like',   'publisher',    qr|Faber \S+ Faber|   ],
         [ 'is',     'pubdate',      '17 February, 2005' ],
         [ 'is',     'binding',      'Paperback'         ],
         [ 'is',     'pages',        240                 ],
-        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/0367\03679eb1.JPG'  ],
-        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/0367\03679eb1.JPG'  ],
+        [ 'is',     'image_link',   'http://www.pickabook.co.uk/CoverImages/2017_7_13\9780571224814.jpg'  ],
+        [ 'is',     'thumb_link',   'http://www.pickabook.co.uk/CoverImages/2017_7_13\9780571224814.jpg'  ],
         [ 'like',   'description',  qr|Ian Curtis left behind a legacy rich in artistic genius| ],
         [ 'is',     'book_link',    'http://www.pickabook.co.uk/9780571224814.aspx?ToSearch=TRUE' ]
     ],
